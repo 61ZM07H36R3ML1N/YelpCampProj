@@ -8,4 +8,19 @@ App Demo:
 
 ##Features
 
-*
+* Hosted on Heroku (free) Servers
+* Non-relational database (MongoDB)
+* Mongoose for configuration of MongoDB models
+* Node.js used as server-side environment code
+* Express for handling page serving routes
+* Method-Override for handling update and delete functions
+* EJS for Templating
+* Passport.js for essential security measures for password has and salting
+* Express-Sessions for configuration of cookies
+* Geocoder with Google Maps API for rendering locations of campsites
+* Alarm/Alert messages to notify errors when user is redirected from a page
+* Bootstrap to provide a mobile first responsive design
+
+##Dependencies
+
+
