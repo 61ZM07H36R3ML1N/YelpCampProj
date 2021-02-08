@@ -28,9 +28,7 @@ const seedDB = async () => {
             title: '${sample(descriptors)} ${sample(places)}'
         })
         await camp.save();
-        console.log(`Record ${i} created`);
     }
-    db.close()
 }
 
 seedDB();
