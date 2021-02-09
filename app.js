@@ -39,7 +39,9 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 app.post('/campgrounds', async(req, res) => {
-     res.send(req.body)
+     const campground = new Campground(req.body.campground);
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`)
 })
 
 app.get('/campgrounds/:id', async(req, res,) => {
@@ -47,6 +49,7 @@ app.get('/campgrounds/:id', async(req, res,) => {
     res.render('campgrounds/show', { campground });
 });
 
+// Server Listening 
 app.listen(3001, ()=> {
     console.log('Serving on port 3001')
 });
