@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Campground = require('./models/campground');
 
+//MongoDB connection
 mongoose.connect('mongodb://localhost:27017/YelpCampProj', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -17,10 +18,13 @@ db.once("open", () => {
 
 const app = express();
 
-
+// What to use
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
+app.use(express.urlencoded({ extended: true }))
+
+// Page Routes
 app.get('/', (req, res) => {
     res.render('landing')
 });
@@ -32,6 +36,10 @@ app.get('/campgrounds', async (req, res) => {
 
 app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new');
+})
+
+app.post('/campgrounds', async(req, res) => {
+     res.send(req.body)
 })
 
 app.get('/campgrounds/:id', async(req, res,) => {
