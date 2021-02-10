@@ -59,7 +59,8 @@ app.get('/campgrounds/:id/edit', async(req, res) => {
 
 // App.put route
 app.put('/campgrounds/:id', async(req, res) => {
-    res.send("IT WORKED!!")
+    const { id } = req.params;
+    Campground.findByIdAndUpdate()
 })
 
 // Server Listening 
