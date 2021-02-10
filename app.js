@@ -19,13 +19,15 @@ db.once("open", () => {
 
 const app = express();
 
-// What to use
+// App.set routes
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
+// App.use routes
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'));
 
-// Page Routes
+// App.get Routes
 app.get('/', (req, res) => {
     res.render('landing')
 });
@@ -53,6 +55,11 @@ app.get('/campgrounds/:id', async(req, res,) => {
 app.get('/campgrounds/:id/edit', async(req, res) => {
     const campground = await Campground.findById(req.params.id)
     res.render('campgrounds/edit', { campground });
+})
+
+// App.put route
+app.put('/campgrounds/:id', async(req, res) => {
+    res.send("IT WORKED!!")
 })
 
 // Server Listening 
