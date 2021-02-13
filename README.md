@@ -20,7 +20,7 @@ App Demo:
 * Express-Sessions for configuration of cookies
 * Geocoder with Google Maps API for rendering locations of campsites
 * Alarm/Alert messages to notify errors when user is redirected from a page
-* Bootstrap to provide a mobile first responsive design
+* Bootstrap5 to provide a mobile first responsive design
 
 ## Dependencies
 
