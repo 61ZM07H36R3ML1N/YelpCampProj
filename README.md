@@ -9,6 +9,7 @@ App Demo:
 ## Features
 
 * Hosted on Heroku (free) Servers
+* RESTful API
 * Non-relational database (MongoDB)
 * Mongoose for configuration of MongoDB models
 * Node.js used as server-side environment code
