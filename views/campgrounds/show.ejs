@@ -1,7 +1,7 @@
 <% layout('/layouts/boilerplate')%> 
 <div class="row">
     <div class="col-6 offset-3"></div>
-    <div class="card">
+    <div class="card mb-3">
         <img src="<%= campground.image%>" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title"><%= campground.title%></h5>
@@ -16,6 +16,10 @@
           <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
             <button class="btn btn-danger">Delete</button>
         </form>
+        </div>
+        <div class="card-footer text-muted">
+          2 days ago
+          <a href="/campgrounds">All Campgrounds</a>
         </div>
       </div>
     </div>
