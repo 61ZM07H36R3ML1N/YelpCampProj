@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const catchAsync = require('./utilities/catchAsyncError');
+const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 
@@ -26,11 +27,16 @@ app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+
 // App.use routes
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 app.use((err, req, res, next) => {
-res.send('Oh Boy, something went wrong!')
+    const {statusCode = 500, message = 'Something went wrong'} = err;
+    res.status(statusCode).send(message);
 })
 
 // App.get Routes
@@ -48,27 +54,28 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
+    if(!req.body.campground) throw new ExpressError()
      const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`)
-}))
+}));
 
-app.get('/campgrounds/:id', async(req, res,) => {
+app.get('/campgrounds/:id', catchAsync(async(req, res,) => {
     const campground = await Campground.findById(req.params.id)
     res.render('campgrounds/show', { campground });
-});
+}));
 
-app.get('/campgrounds/:id/edit', async(req, res) => {
+app.get('/campgrounds/:id/edit', catchAsync(async(req, res) => {
     const campground = await Campground.findById(req.params.id)
     res.render('campgrounds/edit', { campground });
-})
+}));
 
 // App.put route
-app.put('/campgrounds/:id', async(req, res) => {
+app.put('/campgrounds/:id', catchAsync(async(req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id,{...req.body.campground});
     res.redirect(`/campgrounds/${campground._id}`)
-})
+}));
 
 // App.delete route
 app.delete('/campgrounds/:id', async (req, res) =>{
