@@ -34,10 +34,11 @@ app.all('*', (req, res, next) => {
 // App.use routes
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
+
 app.use((err, req, res, next) => {
-    const {statusCode = 500, message = 'Something went wrong'} = err;
+    const {statusCode = 500, message = 'Wires Crossed' } = err;
     res.status(statusCode).send(message);
-})
+});
 
 // App.get Routes
 app.get('/', (req, res) => {
@@ -54,7 +55,7 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
-    if(!req.body.campground) throw new ExpressError()
+    if(!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
      const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`)
@@ -78,11 +79,11 @@ app.put('/campgrounds/:id', catchAsync(async(req, res) => {
 }));
 
 // App.delete route
-app.delete('/campgrounds/:id', async (req, res) =>{
+app.delete('/campgrounds/:id', catchAsync(async (req, res) =>{
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
-})
+}))
 
 // Server Listening 
 app.listen(3001, ()=> {
