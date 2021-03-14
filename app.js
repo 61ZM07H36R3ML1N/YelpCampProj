@@ -37,7 +37,7 @@ app.use(methodOverride('_method'));
 
 app.use((err, req, res, next) => {
     const {statusCode = 500, message = 'Wires Crossed' } = err;
-    res.status(statusCode).send(message);
+    res.status(statusCode).render('error')
 });
 
 // App.get Routes
