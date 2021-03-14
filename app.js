@@ -36,8 +36,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 
 app.use((err, req, res, next) => {
-    const {statusCode = 500, message = 'Wires Crossed' } = err;
-    res.status(statusCode).render('error')
+    const {statusCode = 500 } = err;
+    if(!err.message) err.message = ' wires crossed!'
+    res.status(statusCode).render('error', { err })
 });
 
 // App.get Routes
