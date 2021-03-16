@@ -28,19 +28,11 @@ app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
-app.all('*', (req, res, next) => {
-    next(new ExpressError('Page Not Found', 404))
-})
 
 // App.use routes
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 
-app.use((err, req, res, next) => {
-    const {statusCode = 500 } = err;
-    if(!err.message) err.message = ' wires crossed!'
-    res.status(statusCode).render('error', { err })
-});
 
 // App.get Routes
 app.get('/', (req, res) => {
@@ -57,12 +49,18 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
-    // if(!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
+    //if(!req.body.campground) throw new ExpressError
     const campgroundSchema = Joi.object({
         campground: Joi.object({
             title: Joi.string().required(),
+            price: Joi.number().required().min(0)
         }).required()
     })
+    const result = campgroundSchema.validate(req.body);
+    if(result.error){
+        throw new ExpressError(result.error.details)
+    }
+    console.log(result);
      const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`)
@@ -91,6 +89,16 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) =>{
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 }))
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+
+app.use((err, req, res, next) => {
+    const {statusCode = 500 } = err;
+    if(!err.message) err.message = ' wires crossed!'
+    res.status(statusCode).render('error', { err })
+});
 
 // Server Listening 
 app.listen(3001, ()=> {
