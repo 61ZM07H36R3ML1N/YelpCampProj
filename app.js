@@ -90,6 +90,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) =>{
 }))
 
 app.post('/campgrounds/:id/reviews', catchAsync(async(req, res) => {
+    const campground = await Campground.findById(req.params.id);
     
 }))
 
