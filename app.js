@@ -36,16 +36,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 
-const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-    console.log(result);
-}
+
 const validateReview = (req, res, next) => {
     const {error} = reviewSchema.validate(req.body);
     if (error) {
@@ -56,7 +47,11 @@ const validateReview = (req, res, next) => {
     }
 }
 
-// App.get Routes
+app.use('/campgrounds', campgrounds)
+
+app.get('/', (req, res) => {
+    res.render('landing')
+});
 
 
 app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async(req, res) => {
