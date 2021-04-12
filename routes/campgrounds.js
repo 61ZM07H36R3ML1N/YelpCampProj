@@ -13,7 +13,6 @@ const validateCampground = (req, res, next) => {
     } else {
         next();
     }
-    console.log(result);
 }
 
 router.get('/', async (req, res,) => {
