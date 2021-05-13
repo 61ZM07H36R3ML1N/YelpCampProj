@@ -34,7 +34,10 @@ router.post('/', validateCampground, catchAsync(async (req, res, next) => {
 
 router.get('/:id', catchAsync(async(req, res,) => {
     const campground = await Campground.findById(req.params.id).populate('reviews')
-    //.execPopulate();
+    if(!campground){
+        req.flash('error', 'Cannot find that campground!');
+        return res.redirect('/campgrounds');
+    }
     res.render('campgrounds/show', { campground });
 }));
 
@@ -55,7 +58,8 @@ router.put('/:id', validateCampground, catchAsync(async(req, res) => {
 router.delete('/:id', catchAsync(async (req, res) =>{
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
+    req.flash('success', 'Successfully updated campground!');
     res.redirect('/campgrounds');
-}))
+}));
 
 module.exports = router;
