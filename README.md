@@ -16,7 +16,7 @@ App Demo:
 * Express for handling page serving routes
 * Method-Override for handling update and delete functions
 * EJS for Templating
-* Passport.js for essential security measures for password hashing and salting
+* Passport.js for essential security measures for user authentication
 * Express-Sessions for configuration of cookies
 * Geocoder with Google Maps API for rendering locations of campsites
 * Alarm/Alert messages to notify errors when user is redirected from a page
@@ -33,19 +33,4 @@ Each Campground has:
 * Name
 * Image
 
-## Layout and Basic Styling
-* Create header and footer
-* Add in Bootstrap
 
-## Creating New Campgrounds
-* Setup new campground POST route (to receive data from the form)
-* Add in body-parser(to get the req.body contents)
-* Setup route to show form (/new) -- action:"/campgrounds"
-* Add basic unstyled form
-
-## Style the campgrounds page
-* Add a better header/title
-* Make campgrounds display in grid (Bootstrap)
-
-## Style the Navbar and Form
-* Add a navbar to all templates
