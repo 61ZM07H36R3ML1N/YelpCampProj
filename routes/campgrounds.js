@@ -4,6 +4,10 @@ const catchAsync = require('../utilities/catchAsyncError');
 const {campgroundSchema} = require ('../schemas.js');
 const ExpressError = require('../utilities/ExpressError');
 const Campground = require('../models/campground');
+const {isLoggedIn} = require('../middleware');
+
+const ExpressError = require('../utils/ExpressError');
+const Campground = require('../models/campground');
 
 const validateCampground = (req, res, next) => {
     const { error } = campgroundSchema.validate(req.body);
@@ -20,11 +24,16 @@ router.get('/', async (req, res,) => {
     res.render('campgrounds/index', { campgrounds })
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
+    if(!req.isAuthenticated()) {
     res.render('campgrounds/new');
+    req.flash('error', 'you must be signed in');
+    res.redirect('/login');
+    }
+    return res.render('campgrounds/new');
 })
 
-router.post('/', validateCampground, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     if(!req.body.campground) throw new ExpressError
      const campground = new Campground(req.body.campground);
     await campground.save();
