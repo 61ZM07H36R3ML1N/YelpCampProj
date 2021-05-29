@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const passportlocalMongoose = require('passport-local-mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 const Schema = mongoose.Schema;
 
 
@@ -10,6 +10,6 @@ const UserSchema = new Schema({
         unique: true
     }
 });
-UserSchema.plugin(passportlocalMongoose);
+UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', UserSchema);
