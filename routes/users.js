@@ -23,7 +23,16 @@ router.post('/do_register', catchAsyncError(async(req, res) => {
     }
     console.log('post do_register completed');
 
-})),
+}));
+
+router.get('/login', (req, res) => {
+    res.render('users/login');
+})
+
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
+    req.flash('success', 'Welcome back!!!');
+    res.redirect('/campgrounds');
+})
 
 
 module.exports = router;
