@@ -23,11 +23,11 @@ router.get('/', async (req, res,) => {
     console.log('get to /campgrounds completed')
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', isSignedIn, (req, res) => {
     res.render('campgrounds/new');
 })
 
-router.post('/', validateCampground, catchAsync(async (req, res, next) => {
+router.post('/', isSignedIn, validateCampground, catchAsync(async (req, res, next) => {
     if(!req.body.campground) throw new ExpressError
      const campground = new Campground(req.body.campground);
     await campground.save();
@@ -44,13 +44,13 @@ router.get('/:id', catchAsync(async(req, res,) => {
     res.render('campgrounds/show', { campground });
 }));
 
-router.get('/:id/edit', catchAsync(async(req, res) => {
+router.get('/:id/edit', isSignedIn, catchAsync(async(req, res) => {
     const campground = await Campground.findById(req.params.id)
     res.render('campgrounds/edit', { campground });
 }));
 
 
-router.put('/:id', validateCampground, catchAsync(async(req, res) => {
+router.put('/:id', validateCampground, isSignedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id,{ ...req.body.campground});
     req.flash('success', 'Successfully updated campground!');
@@ -58,7 +58,7 @@ router.put('/:id', validateCampground, catchAsync(async(req, res) => {
 }));
 
 
-router.delete('/:id', catchAsync(async (req, res) =>{
+router.delete('/:id', isSignedIn, catchAsync(async (req, res) =>{
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted campground')
